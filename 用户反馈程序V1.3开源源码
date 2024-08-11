@@ -1,0 +1,1504 @@
+#我们只负责提供树状源码
+Module(
+  body=[
+    Import(
+      names=[
+        alias(name='tkinter', asname='tk')]),
+    Import(
+      names=[
+        alias(name='base64')]),
+    Import(
+      names=[
+        alias(name='hashlib')]),
+    ImportFrom(
+      module='tkinter',
+      names=[
+        alias(name='ttk'),
+        alias(name='filedialog'),
+        alias(name='messagebox')],
+      level=0),
+    Import(
+      names=[
+        alias(name='smtplib')]),
+    ImportFrom(
+      module='email.mime.multipart',
+      names=[
+        alias(name='MIMEMultipart')],
+      level=0),
+    ImportFrom(
+      module='email.mime.text',
+      names=[
+        alias(name='MIMEText')],
+      level=0),
+    ImportFrom(
+      module='email.mime.base',
+      names=[
+        alias(name='MIMEBase')],
+      level=0),
+    ImportFrom(
+      module='email',
+      names=[
+        alias(name='encoders')],
+      level=0),
+    Import(
+      names=[
+        alias(name='os')]),
+    Import(
+      names=[
+        alias(name='easygui', asname='eg')]),
+    Import(
+      names=[
+        alias(name='sys')]),
+    Import(
+      names=[
+        alias(name='random')]),
+    Assign(
+      targets=[
+        Name(id='rell', ctx=Store())],
+      value=Call(
+        func=Attribute(
+          value=Name(id='eg', ctx=Load()),
+          attr='choicebox',
+          ctx=Load()),
+        args=[
+          Constant(value='请选择您要使用的选项。谢谢。\n本软件由qazwsx112233aabbcc@outlook.com邮箱所有者提供。\n禁止以任何形式破译源码。')],
+        keywords=[
+          keyword(
+            arg='title',
+            value=Constant(value='页面导航')),
+          keyword(
+            arg='choices',
+            value=List(
+              elts=[
+                Constant(value='关于本软件'),
+                Constant(value='反馈不满、建议')],
+              ctx=Load()))])),
+    If(
+      test=Compare(
+        left=Name(id='rell', ctx=Load()),
+        ops=[
+          Eq()],
+        comparators=[
+          Constant(value='关于本软件')]),
+      body=[
+        Expr(
+          value=Call(
+            func=Attribute(
+              value=Name(id='messagebox', ctx=Load()),
+              attr='showinfo',
+              ctx=Load()),
+            args=[
+              Constant(value='关于'),
+              Constant(value='Tips:本软件只是反馈软件！\n邮箱意见反馈V1.3\n作者：qazwsx112233aabbcc@outlook.com邮箱所有者。\n版权:qazwsx112233aabbcc@outlook.com邮箱所有者保留所有版权。\n注意：本软件在GiHub上开源。\n禁止以任何形式破译源码。')],
+            keywords=[])),
+        Expr(
+          value=Call(
+            func=Attribute(
+              value=Name(id='sys', ctx=Load()),
+              attr='exit',
+              ctx=Load()),
+            args=[
+              Constant(value=0)],
+            keywords=[]))],
+      orelse=[
+        Pass()]),
+    FunctionDef(
+      name='generate_dynamic_key',
+      args=arguments(
+        posonlyargs=[],
+        args=[
+          arg(arg='seed')],
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]),
+      body=[
+        Expr(
+          value=Call(
+            func=Attribute(
+              value=Name(id='random', ctx=Load()),
+              attr='seed',
+              ctx=Load()),
+            args=[
+              Name(id='seed', ctx=Load())],
+            keywords=[])),
+        Return(
+          value=Call(
+            func=Attribute(
+              value=Call(
+                func=Attribute(
+                  value=Constant(value=''),
+                  attr='join',
+                  ctx=Load()),
+                args=[
+                  GeneratorExp(
+                    elt=Call(
+                      func=Attribute(
+                        value=Name(id='random', ctx=Load()),
+                        attr='choice',
+                        ctx=Load()),
+                      args=[
+                        Constant(value='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')],
+                      keywords=[]),
+                    generators=[
+                      comprehension(
+                        target=Name(id='_', ctx=Store()),
+                        iter=Call(
+                          func=Name(id='range', ctx=Load()),
+                          args=[
+                            Constant(value=16)],
+                          keywords=[]),
+                        ifs=[],
+                        is_async=0)])],
+                keywords=[]),
+              attr='encode',
+              ctx=Load()),
+            args=[],
+            keywords=[]))],
+      decorator_list=[]),
+    FunctionDef(
+      name='multi_layer_decode',
+      args=arguments(
+        posonlyargs=[],
+        args=[
+          arg(arg='data'),
+          arg(arg='key')],
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]),
+      body=[
+        Assign(
+          targets=[
+            Name(id='data', ctx=Store())],
+          value=Call(
+            func=Attribute(
+              value=Name(id='base64', ctx=Load()),
+              attr='b64decode',
+              ctx=Load()),
+            args=[
+              Name(id='data', ctx=Load())],
+            keywords=[])),
+        Assign(
+          targets=[
+            Name(id='data', ctx=Store())],
+          value=Call(
+            func=Name(id='bytes', ctx=Load()),
+            args=[
+              ListComp(
+                elt=BinOp(
+                  left=Name(id='b', ctx=Load()),
+                  op=BitXor(),
+                  right=Subscript(
+                    value=Name(id='key', ctx=Load()),
+                    slice=BinOp(
+                      left=Name(id='i', ctx=Load()),
+                      op=Mod(),
+                      right=Call(
+                        func=Name(id='len', ctx=Load()),
+                        args=[
+                          Name(id='key', ctx=Load())],
+                        keywords=[])),
+                    ctx=Load())),
+                generators=[
+                  comprehension(
+                    target=Tuple(
+                      elts=[
+                        Name(id='i', ctx=Store()),
+                        Name(id='b', ctx=Store())],
+                      ctx=Store()),
+                    iter=Call(
+                      func=Name(id='enumerate', ctx=Load()),
+                      args=[
+                        Name(id='data', ctx=Load())],
+                      keywords=[]),
+                    ifs=[],
+                    is_async=0)])],
+            keywords=[])),
+        Assign(
+          targets=[
+            Name(id='data', ctx=Store())],
+          value=Subscript(
+            value=Name(id='data', ctx=Load()),
+            slice=Slice(
+              step=UnaryOp(
+                op=USub(),
+                operand=Constant(value=1))),
+            ctx=Load())),
+        Assign(
+          targets=[
+            Name(id='data', ctx=Store())],
+          value=Subscript(
+            value=Call(
+              func=Attribute(
+                value=Call(
+                  func=Attribute(
+                    value=Name(id='hashlib', ctx=Load()),
+                    attr='sha256',
+                    ctx=Load()),
+                  args=[
+                    Name(id='data', ctx=Load())],
+                  keywords=[]),
+                attr='digest',
+                ctx=Load()),
+              args=[],
+              keywords=[]),
+            slice=Slice(
+              upper=Constant(value=16)),
+            ctx=Load())),
+        Return(
+          value=Call(
+            func=Attribute(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='base64', ctx=Load()),
+                  attr='b64encode',
+                  ctx=Load()),
+                args=[
+                  Name(id='data', ctx=Load())],
+                keywords=[]),
+              attr='decode',
+              ctx=Load()),
+            args=[
+              Constant(value='utf-8')],
+            keywords=[]))],
+      decorator_list=[]),
+    Assign(
+      targets=[
+        Name(id='PART1', ctx=Store())],
+      value=Constant(value='U3ZHZGNiY2VWZnZhZ1MxZjNzZQ==')),
+    Assign(
+      targets=[
+        Name(id='PART2', ctx=Store())],
+      value=Constant(value='Y2dzdWh2bGRJQWphRk5uZQ==')),
+    Assign(
+      targets=[
+        Name(id='PART3', ctx=Store())],
+      value=Constant(value='dnh1dWJjd3Fmc2VUY2Fo')),
+    Assign(
+      targets=[
+        Name(id='seed1', ctx=Store())],
+      value=Constant(value='part1-seed')),
+    Assign(
+      targets=[
+        Name(id='seed2', ctx=Store())],
+      value=Constant(value='part2-seed')),
+    Assign(
+      targets=[
+        Name(id='seed3', ctx=Store())],
+      value=Constant(value='part3-seed')),
+    Assign(
+      targets=[
+        Name(id='KEY1', ctx=Store())],
+      value=Call(
+        func=Name(id='generate_dynamic_key', ctx=Load()),
+        args=[
+          Name(id='seed1', ctx=Load())],
+        keywords=[])),
+    Assign(
+      targets=[
+        Name(id='KEY2', ctx=Store())],
+      value=Call(
+        func=Name(id='generate_dynamic_key', ctx=Load()),
+        args=[
+          Name(id='seed2', ctx=Load())],
+        keywords=[])),
+    Assign(
+      targets=[
+        Name(id='KEY3', ctx=Store())],
+      value=Call(
+        func=Name(id='generate_dynamic_key', ctx=Load()),
+        args=[
+          Name(id='seed3', ctx=Load())],
+        keywords=[])),
+    FunctionDef(
+      name='get_complex_password',
+      args=arguments(
+        posonlyargs=[],
+        args=[
+          arg(arg='parts'),
+          arg(arg='keys')],
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]),
+      body=[
+        Assign(
+          targets=[
+            Name(id='decoded_parts', ctx=Store())],
+          value=List(elts=[], ctx=Load())),
+        For(
+          target=Tuple(
+            elts=[
+              Name(id='part', ctx=Store()),
+              Name(id='key', ctx=Store())],
+            ctx=Store()),
+          iter=Call(
+            func=Name(id='zip', ctx=Load()),
+            args=[
+              Name(id='parts', ctx=Load()),
+              Name(id='keys', ctx=Load())],
+            keywords=[]),
+          body=[
+            Assign(
+              targets=[
+                Name(id='decoded', ctx=Store())],
+              value=Call(
+                func=Name(id='multi_layer_decode', ctx=Load()),
+                args=[
+                  Name(id='part', ctx=Load()),
+                  Name(id='key', ctx=Load())],
+                keywords=[])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='decoded_parts', ctx=Load()),
+                  attr='append',
+                  ctx=Load()),
+                args=[
+                  Name(id='decoded', ctx=Load())],
+                keywords=[]))],
+          orelse=[]),
+        Return(
+          value=Call(
+            func=Attribute(
+              value=Constant(value=''),
+              attr='join',
+              ctx=Load()),
+            args=[
+              Name(id='decoded_parts', ctx=Load())],
+            keywords=[]))],
+      decorator_list=[]),
+    Assign(
+      targets=[
+        Name(id='ENCODED_PASSWORD', ctx=Store())],
+      value=List(
+        elts=[
+          Name(id='PART1', ctx=Load()),
+          Name(id='PART2', ctx=Load()),
+          Name(id='PART3', ctx=Load())],
+        ctx=Load())),
+    Assign(
+      targets=[
+        Name(id='DYNAMIC_KEYS', ctx=Store())],
+      value=List(
+        elts=[
+          Name(id='KEY1', ctx=Load()),
+          Name(id='KEY2', ctx=Load()),
+          Name(id='KEY3', ctx=Load())],
+        ctx=Load())),
+    Assign(
+      targets=[
+        Name(id='SMTP_PASSWORD', ctx=Store())],
+      value=Call(
+        func=Name(id='get_complex_password', ctx=Load()),
+        args=[
+          Name(id='ENCODED_PASSWORD', ctx=Load()),
+          Name(id='DYNAMIC_KEYS', ctx=Load())],
+        keywords=[])),
+    Assign(
+      targets=[
+        Name(id='TO_EMAIL', ctx=Store())],
+      value=Constant(value='qazwsx112233aabbcc@outlook.com')),
+    Assign(
+      targets=[
+        Name(id='SMTP_SERVER', ctx=Store())],
+      value=Constant(value='smtp.outlook.com')),
+    Assign(
+      targets=[
+        Name(id='SMTP_PORT', ctx=Store())],
+      value=Constant(value=587)),
+    Assign(
+      targets=[
+        Name(id='SMTP_USER', ctx=Store())],
+      value=Constant(value='qazwsx112233aabbcc@outlook.com')),
+    ClassDef(
+      name='FeedbackApp',
+      bases=[],
+      keywords=[],
+      body=[
+        FunctionDef(
+          name='__init__',
+          args=arguments(
+            posonlyargs=[],
+            args=[
+              arg(arg='self'),
+              arg(arg='root')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]),
+          body=[
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='root',
+                  ctx=Store())],
+              value=Name(id='root', ctx=Load())),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='root',
+                    ctx=Load()),
+                  attr='title',
+                  ctx=Load()),
+                args=[
+                  Constant(value='反馈表单')],
+                keywords=[])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='title_label',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Label',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='产品或程序名称（最多64个字符）:'))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='title_label',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='title_entry',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Entry',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='width',
+                    value=Constant(value=70))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='title_entry',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='title_entry',
+                    ctx=Load()),
+                  attr='bind',
+                  ctx=Load()),
+                args=[
+                  Constant(value='<KeyRelease>'),
+                  Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='update_char_count',
+                    ctx=Load())],
+                keywords=[])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='body_label',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Label',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='内容（最多2048个字符）:\n(Tips:建议留下您的邮箱，这样方便沟通)'))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='body_label',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='body_text',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Text',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='wrap',
+                    value=Constant(value='word')),
+                  keyword(
+                    arg='height',
+                    value=Constant(value=15)),
+                  keyword(
+                    arg='width',
+                    value=Constant(value=70))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='body_text',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5)),
+                  keyword(
+                    arg='padx',
+                    value=Constant(value=10)),
+                  keyword(
+                    arg='fill',
+                    value=Attribute(
+                      value=Name(id='tk', ctx=Load()),
+                      attr='BOTH',
+                      ctx=Load())),
+                  keyword(
+                    arg='expand',
+                    value=Constant(value=True))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='body_text',
+                    ctx=Load()),
+                  attr='bind',
+                  ctx=Load()),
+                args=[
+                  Constant(value='<KeyRelease>'),
+                  Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='update_char_count',
+                    ctx=Load())],
+                keywords=[])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='scrollbar',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='ttk', ctx=Load()),
+                  attr='Scrollbar',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='orient',
+                    value=Constant(value='vertical')),
+                  keyword(
+                    arg='command',
+                    value=Attribute(
+                      value=Attribute(
+                        value=Name(id='self', ctx=Load()),
+                        attr='body_text',
+                        ctx=Load()),
+                      attr='yview',
+                      ctx=Load()))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='body_text',
+                    ctx=Load()),
+                  attr='configure',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='yscrollcommand',
+                    value=Attribute(
+                      value=Attribute(
+                        value=Name(id='self', ctx=Load()),
+                        attr='scrollbar',
+                        ctx=Load()),
+                      attr='set',
+                      ctx=Load()))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='scrollbar',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='side',
+                    value=Constant(value='right')),
+                  keyword(
+                    arg='fill',
+                    value=Constant(value='y'))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='char_count_label',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Label',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='剩余字符: 标题 64, 内容 2048'))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='char_count_label',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='attach_button',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Button',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='添加附件')),
+                  keyword(
+                    arg='command',
+                    value=Attribute(
+                      value=Name(id='self', ctx=Load()),
+                      attr='add_attachment',
+                      ctx=Load()))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='attach_button',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='attachment_label',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Label',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='未选择附件'))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='attachment_label',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=5))])),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='attachments',
+                  ctx=Store())],
+              value=List(elts=[], ctx=Load())),
+            Assign(
+              targets=[
+                Attribute(
+                  value=Name(id='self', ctx=Load()),
+                  attr='submit_button',
+                  ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Button',
+                  ctx=Load()),
+                args=[
+                  Name(id='root', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='提交反馈')),
+                  keyword(
+                    arg='command',
+                    value=Attribute(
+                      value=Name(id='self', ctx=Load()),
+                      attr='send_feedback',
+                      ctx=Load()))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='submit_button',
+                    ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=20))]))],
+          decorator_list=[]),
+        FunctionDef(
+          name='update_char_count',
+          args=arguments(
+            posonlyargs=[],
+            args=[
+              arg(arg='self'),
+              arg(arg='event')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[
+              Constant(value=None)]),
+          body=[
+            Assign(
+              targets=[
+                Name(id='title_len', ctx=Store())],
+              value=Call(
+                func=Name(id='len', ctx=Load()),
+                args=[
+                  Call(
+                    func=Attribute(
+                      value=Attribute(
+                        value=Name(id='self', ctx=Load()),
+                        attr='title_entry',
+                        ctx=Load()),
+                      attr='get',
+                      ctx=Load()),
+                    args=[],
+                    keywords=[])],
+                keywords=[])),
+            Assign(
+              targets=[
+                Name(id='body_len', ctx=Store())],
+              value=BinOp(
+                left=Call(
+                  func=Name(id='len', ctx=Load()),
+                  args=[
+                    Call(
+                      func=Attribute(
+                        value=Attribute(
+                          value=Name(id='self', ctx=Load()),
+                          attr='body_text',
+                          ctx=Load()),
+                        attr='get',
+                        ctx=Load()),
+                      args=[
+                        Constant(value='1.0'),
+                        Attribute(
+                          value=Name(id='tk', ctx=Load()),
+                          attr='END',
+                          ctx=Load())],
+                      keywords=[])],
+                  keywords=[]),
+                op=Sub(),
+                right=Constant(value=1))),
+            Assign(
+              targets=[
+                Name(id='remaining_title', ctx=Store())],
+              value=Call(
+                func=Name(id='max', ctx=Load()),
+                args=[
+                  Constant(value=0),
+                  BinOp(
+                    left=Constant(value=64),
+                    op=Sub(),
+                    right=Name(id='title_len', ctx=Load()))],
+                keywords=[])),
+            Assign(
+              targets=[
+                Name(id='remaining_body', ctx=Store())],
+              value=Call(
+                func=Name(id='max', ctx=Load()),
+                args=[
+                  Constant(value=0),
+                  BinOp(
+                    left=Constant(value=2048),
+                    op=Sub(),
+                    right=Name(id='body_len', ctx=Load()))],
+                keywords=[])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='char_count_label',
+                    ctx=Load()),
+                  attr='config',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=JoinedStr(
+                      values=[
+                        Constant(value='剩余字符: 标题 '),
+                        FormattedValue(
+                          value=Name(id='remaining_title', ctx=Load()),
+                          conversion=-1),
+                        Constant(value=', 内容 '),
+                        FormattedValue(
+                          value=Name(id='remaining_body', ctx=Load()),
+                          conversion=-1)]))]))],
+          decorator_list=[]),
+        FunctionDef(
+          name='add_attachment',
+          args=arguments(
+            posonlyargs=[],
+            args=[
+              arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]),
+          body=[
+            Assign(
+              targets=[
+                Name(id='file_path', ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='filedialog', ctx=Load()),
+                  attr='askopenfilename',
+                  ctx=Load()),
+                args=[],
+                keywords=[])),
+            If(
+              test=Name(id='file_path', ctx=Load()),
+              body=[
+                If(
+                  test=Compare(
+                    left=Call(
+                      func=Attribute(
+                        value=Attribute(
+                          value=Name(id='os', ctx=Load()),
+                          attr='path',
+                          ctx=Load()),
+                        attr='getsize',
+                        ctx=Load()),
+                      args=[
+                        Name(id='file_path', ctx=Load())],
+                      keywords=[]),
+                    ops=[
+                      LtE()],
+                    comparators=[
+                      BinOp(
+                        left=BinOp(
+                          left=Constant(value=15),
+                          op=Mult(),
+                          right=Constant(value=1024)),
+                        op=Mult(),
+                        right=Constant(value=1024))]),
+                  body=[
+                    Expr(
+                      value=Call(
+                        func=Attribute(
+                          value=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='attachments',
+                            ctx=Load()),
+                          attr='append',
+                          ctx=Load()),
+                        args=[
+                          Name(id='file_path', ctx=Load())],
+                        keywords=[])),
+                    Expr(
+                      value=Call(
+                        func=Attribute(
+                          value=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='attachment_label',
+                            ctx=Load()),
+                          attr='config',
+                          ctx=Load()),
+                        args=[],
+                        keywords=[
+                          keyword(
+                            arg='text',
+                            value=JoinedStr(
+                              values=[
+                                Constant(value='已添加: '),
+                                FormattedValue(
+                                  value=Call(
+                                    func=Attribute(
+                                      value=Constant(value=', '),
+                                      attr='join',
+                                      ctx=Load()),
+                                    args=[
+                                      GeneratorExp(
+                                        elt=Call(
+                                          func=Attribute(
+                                            value=Attribute(
+                                              value=Name(id='os', ctx=Load()),
+                                              attr='path',
+                                              ctx=Load()),
+                                            attr='basename',
+                                            ctx=Load()),
+                                          args=[
+                                            Name(id='f', ctx=Load())],
+                                          keywords=[]),
+                                        generators=[
+                                          comprehension(
+                                            target=Name(id='f', ctx=Store()),
+                                            iter=Attribute(
+                                              value=Name(id='self', ctx=Load()),
+                                              attr='attachments',
+                                              ctx=Load()),
+                                            ifs=[],
+                                            is_async=0)])],
+                                    keywords=[]),
+                                  conversion=-1)]))]))],
+                  orelse=[
+                    Expr(
+                      value=Call(
+                        func=Attribute(
+                          value=Name(id='messagebox', ctx=Load()),
+                          attr='showwarning',
+                          ctx=Load()),
+                        args=[
+                          Constant(value='文件过大'),
+                          Constant(value='附件超过15MB限制。')],
+                        keywords=[]))])],
+              orelse=[])],
+          decorator_list=[]),
+        FunctionDef(
+          name='send_feedback',
+          args=arguments(
+            posonlyargs=[],
+            args=[
+              arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]),
+          body=[
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='eg', ctx=Load()),
+                  attr='msgbox',
+                  ctx=Load()),
+                args=[
+                  Constant(value='这可能会用半分钟的时间，请您耐心等待发送！')],
+                keywords=[
+                  keyword(
+                    arg='title',
+                    value=Constant(value='提示')),
+                  keyword(
+                    arg='ok_button',
+                    value=Constant(value='好的，发送'))])),
+            Assign(
+              targets=[
+                Name(id='title', ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='title_entry',
+                    ctx=Load()),
+                  attr='get',
+                  ctx=Load()),
+                args=[],
+                keywords=[])),
+            Assign(
+              targets=[
+                Name(id='body', ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Call(
+                    func=Attribute(
+                      value=Attribute(
+                        value=Name(id='self', ctx=Load()),
+                        attr='body_text',
+                        ctx=Load()),
+                      attr='get',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='1.0'),
+                      Attribute(
+                        value=Name(id='tk', ctx=Load()),
+                        attr='END',
+                        ctx=Load())],
+                    keywords=[]),
+                  attr='strip',
+                  ctx=Load()),
+                args=[],
+                keywords=[])),
+            If(
+              test=Compare(
+                left=Call(
+                  func=Name(id='len', ctx=Load()),
+                  args=[
+                    Name(id='title', ctx=Load())],
+                  keywords=[]),
+                ops=[
+                  Gt()],
+                comparators=[
+                  Constant(value=64)]),
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='messagebox', ctx=Load()),
+                      attr='showerror',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='错误'),
+                      Constant(value='标题超过64个字符。')],
+                    keywords=[])),
+                Return()],
+              orelse=[]),
+            If(
+              test=Compare(
+                left=Call(
+                  func=Name(id='len', ctx=Load()),
+                  args=[
+                    Name(id='body', ctx=Load())],
+                  keywords=[]),
+                ops=[
+                  Gt()],
+                comparators=[
+                  Constant(value=2048)]),
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='messagebox', ctx=Load()),
+                      attr='showerror',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='错误'),
+                      Constant(value='内容超过2048个字符。')],
+                    keywords=[])),
+                Return()],
+              orelse=[]),
+            Assign(
+              targets=[
+                Name(id='msg', ctx=Store())],
+              value=Call(
+                func=Name(id='MIMEMultipart', ctx=Load()),
+                args=[],
+                keywords=[])),
+            Assign(
+              targets=[
+                Subscript(
+                  value=Name(id='msg', ctx=Load()),
+                  slice=Constant(value='From'),
+                  ctx=Store())],
+              value=Name(id='SMTP_USER', ctx=Load())),
+            Assign(
+              targets=[
+                Subscript(
+                  value=Name(id='msg', ctx=Load()),
+                  slice=Constant(value='To'),
+                  ctx=Store())],
+              value=Name(id='TO_EMAIL', ctx=Load())),
+            Assign(
+              targets=[
+                Subscript(
+                  value=Name(id='msg', ctx=Load()),
+                  slice=Constant(value='Subject'),
+                  ctx=Store())],
+              value=BinOp(
+                left=Name(id='title', ctx=Load()),
+                op=Add(),
+                right=Constant(value=' 用户反馈'))),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='msg', ctx=Load()),
+                  attr='attach',
+                  ctx=Load()),
+                args=[
+                  Call(
+                    func=Name(id='MIMEText', ctx=Load()),
+                    args=[
+                      Name(id='body', ctx=Load()),
+                      Constant(value='plain')],
+                    keywords=[])],
+                keywords=[])),
+            For(
+              target=Name(id='file_path', ctx=Store()),
+              iter=Attribute(
+                value=Name(id='self', ctx=Load()),
+                attr='attachments',
+                ctx=Load()),
+              body=[
+                Assign(
+                  targets=[
+                    Name(id='attachment', ctx=Store())],
+                  value=Call(
+                    func=Name(id='open', ctx=Load()),
+                    args=[
+                      Name(id='file_path', ctx=Load()),
+                      Constant(value='rb')],
+                    keywords=[])),
+                Assign(
+                  targets=[
+                    Name(id='part', ctx=Store())],
+                  value=Call(
+                    func=Name(id='MIMEBase', ctx=Load()),
+                    args=[
+                      Constant(value='application'),
+                      Constant(value='octet-stream')],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='part', ctx=Load()),
+                      attr='set_payload',
+                      ctx=Load()),
+                    args=[
+                      Call(
+                        func=Attribute(
+                          value=Name(id='attachment', ctx=Load()),
+                          attr='read',
+                          ctx=Load()),
+                        args=[],
+                        keywords=[])],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='encoders', ctx=Load()),
+                      attr='encode_base64',
+                      ctx=Load()),
+                    args=[
+                      Name(id='part', ctx=Load())],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='part', ctx=Load()),
+                      attr='add_header',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='Content-Disposition'),
+                      JoinedStr(
+                        values=[
+                          Constant(value='attachment; filename= '),
+                          FormattedValue(
+                            value=Call(
+                              func=Attribute(
+                                value=Attribute(
+                                  value=Name(id='os', ctx=Load()),
+                                  attr='path',
+                                  ctx=Load()),
+                                attr='basename',
+                                ctx=Load()),
+                              args=[
+                                Name(id='file_path', ctx=Load())],
+                              keywords=[]),
+                            conversion=-1)])],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='msg', ctx=Load()),
+                      attr='attach',
+                      ctx=Load()),
+                    args=[
+                      Name(id='part', ctx=Load())],
+                    keywords=[]))],
+              orelse=[]),
+            Try(
+              body=[
+                Assign(
+                  targets=[
+                    Name(id='server', ctx=Store())],
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='smtplib', ctx=Load()),
+                      attr='SMTP',
+                      ctx=Load()),
+                    args=[
+                      Name(id='SMTP_SERVER', ctx=Load()),
+                      Name(id='SMTP_PORT', ctx=Load())],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='server', ctx=Load()),
+                      attr='starttls',
+                      ctx=Load()),
+                    args=[],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='server', ctx=Load()),
+                      attr='login',
+                      ctx=Load()),
+                    args=[
+                      Name(id='SMTP_USER', ctx=Load()),
+                      Name(id='SMTP_PASSWORD', ctx=Load())],
+                    keywords=[])),
+                Assign(
+                  targets=[
+                    Name(id='text', ctx=Store())],
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='msg', ctx=Load()),
+                      attr='as_string',
+                      ctx=Load()),
+                    args=[],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='server', ctx=Load()),
+                      attr='sendmail',
+                      ctx=Load()),
+                    args=[
+                      Name(id='SMTP_USER', ctx=Load()),
+                      Name(id='TO_EMAIL', ctx=Load()),
+                      Name(id='text', ctx=Load())],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='server', ctx=Load()),
+                      attr='quit',
+                      ctx=Load()),
+                    args=[],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='messagebox', ctx=Load()),
+                      attr='showinfo',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='成功'),
+                      Constant(value='反馈发送成功！')],
+                    keywords=[])),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='self', ctx=Load()),
+                      attr='show_thank_you',
+                      ctx=Load()),
+                    args=[],
+                    keywords=[]))],
+              handlers=[
+                ExceptHandler(
+                  type=Name(id='Exception', ctx=Load()),
+                  name='e',
+                  body=[
+                    Expr(
+                      value=Call(
+                        func=Attribute(
+                          value=Name(id='messagebox', ctx=Load()),
+                          attr='showerror',
+                          ctx=Load()),
+                        args=[
+                          Constant(value='错误'),
+                          JoinedStr(
+                            values=[
+                              Constant(value='反馈发送失败: '),
+                              FormattedValue(
+                                value=Call(
+                                  func=Name(id='str', ctx=Load()),
+                                  args=[
+                                    Name(id='e', ctx=Load())],
+                                  keywords=[]),
+                                conversion=-1)])],
+                        keywords=[]))])],
+              orelse=[],
+              finalbody=[])],
+          decorator_list=[]),
+        FunctionDef(
+          name='show_thank_you',
+          args=arguments(
+            posonlyargs=[],
+            args=[
+              arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]),
+          body=[
+            Assign(
+              targets=[
+                Name(id='thank_you_window', ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Toplevel',
+                  ctx=Load()),
+                args=[
+                  Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='root',
+                    ctx=Load())],
+                keywords=[])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='thank_you_window', ctx=Load()),
+                  attr='title',
+                  ctx=Load()),
+                args=[
+                  Constant(value='感谢')],
+                keywords=[])),
+            Assign(
+              targets=[
+                Name(id='thank_you_label', ctx=Store())],
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tk', ctx=Load()),
+                  attr='Label',
+                  ctx=Load()),
+                args=[
+                  Name(id='thank_you_window', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='text',
+                    value=Constant(value='感谢你的反馈，这样会让我们做的更好！\n（软件出问题一定要反馈我们哟）')),
+                  keyword(
+                    arg='font',
+                    value=Tuple(
+                      elts=[
+                        Constant(value='Helvetica'),
+                        Constant(value=16)],
+                      ctx=Load()))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='thank_you_label', ctx=Load()),
+                  attr='pack',
+                  ctx=Load()),
+                args=[],
+                keywords=[
+                  keyword(
+                    arg='pady',
+                    value=Constant(value=50))])),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='thank_you_window', ctx=Load()),
+                  attr='geometry',
+                  ctx=Load()),
+                args=[
+                  Constant(value='400x250')],
+                keywords=[]))],
+          decorator_list=[])],
+      decorator_list=[]),
+    If(
+      test=Compare(
+        left=Name(id='__name__', ctx=Load()),
+        ops=[
+          Eq()],
+        comparators=[
+          Constant(value='__main__')]),
+      body=[
+        Assign(
+          targets=[
+            Name(id='root', ctx=Store())],
+          value=Call(
+            func=Attribute(
+              value=Name(id='tk', ctx=Load()),
+              attr='Tk',
+              ctx=Load()),
+            args=[],
+            keywords=[])),
+        Assign(
+          targets=[
+            Name(id='app', ctx=Store())],
+          value=Call(
+            func=Name(id='FeedbackApp', ctx=Load()),
+            args=[
+              Name(id='root', ctx=Load())],
+            keywords=[])),
+        Expr(
+          value=Call(
+            func=Attribute(
+              value=Name(id='root', ctx=Load()),
+              attr='mainloop',
+              ctx=Load()),
+            args=[],
+            keywords=[]))],
+      orelse=[])],
+  type_ignores=[])
