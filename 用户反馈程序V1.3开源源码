@@ -89,7 +89,7 @@ Module(
               ctx=Load()),
             args=[
               Constant(value='关于'),
-              Constant(value='Tips:本软件只是反馈软件！\n邮箱意见反馈V1.3\n作者：qazwsx112233aabbcc@outlook.com邮箱所有者。\n版权:qazwsx112233aabbcc@outlook.com邮箱所有者保留所有版权。\n注意：本软件在GiHub上开源。\n禁止以任何形式破译源码。')],
+              Constant(value='Tips:本软件只是反馈软件！\n邮箱意见反馈V1.3\n作者：qazwsx112233aabbcc@outlook.com邮箱所有者。\n版权:qazwsx112233aabbcc@outlook.com邮箱所有者保留所有版权。\n注意：本软件在GiHub上开源。\nGihub仓库（如果无法访问请用VPN加速）：https://github.com/Tanxiangzhong/PythonFile/blob/main\n禁止以任何形式破译源码。')],
             keywords=[])),
         Expr(
           value=Call(
